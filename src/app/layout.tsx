@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Italiana, Marck_Script, Montserrat } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { site } from "@/config/site";
@@ -8,15 +8,32 @@ import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600"],
+  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
   variable: "--font-cormorant",
   display: "swap",
 });
 
-const manrope = Manrope({
+const montserrat = Montserrat({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-manrope",
+  weight: ["300", "400", "500"],
+  variable: "--font-montserrat",
+  display: "swap",
+});
+
+// Italiana — только латиница и цифры: используется для цен и номеров.
+const italiana = Italiana({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-italiana",
+  display: "swap",
+});
+
+// Замена рукописного Marianna из сертификатов (его нет в Google Fonts).
+const script = Marck_Script({
+  subsets: ["latin", "cyrillic"],
+  weight: "400",
+  variable: "--font-script-face",
   display: "swap",
 });
 
@@ -35,7 +52,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru" className={`${cormorant.variable} ${manrope.variable}`}>
+    <html lang="ru" className={`${cormorant.variable} ${montserrat.variable} ${italiana.variable} ${script.variable}`}>
       <body className="min-h-screen">
         <Header />
         <main>{children}</main>

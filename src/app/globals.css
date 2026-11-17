@@ -1,17 +1,35 @@
 @import "tailwindcss";
 
+/* Палитра и шрифты — из макета сертификатов в Figma */
 @theme {
-  --color-cream: #fbf7f3;
-  --color-pearl: #fffdfb;
-  --color-blush: #f4e6e0;
-  --color-rose: #b9726c;
-  --color-rose-dark: #9a5b56;
-  --color-ink: #3a2e2c;
-  --color-muted: #85756f;
-  --color-line: #ecdfd8;
+  --color-cream: #ffffff; /* фон карточек и блоков */
+  --color-paper: #ffffff; /* фон страницы — «стол», на котором лежат карточки */
+  --color-photo: #e9e2da;
+  --color-ink: #000000;
+  --color-muted: #6e6965;
+  --color-line: #e2dad1;
+  --color-gold: #a87a2a;
+  --color-gold-light: #e6c77e;
 
   --font-serif: var(--font-cormorant), "Times New Roman", serif;
-  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
+  --font-display: var(--font-italiana), var(--font-cormorant), serif;
+  --font-script: var(--font-script-face), cursive;
+}
+
+/* Золотой градиент из сертификата (стиль «золото») */
+@utility text-gold {
+  background-image: linear-gradient(
+    90deg,
+    #a87a2a 0%,
+    #e6c77e 30%,
+    #b0842f 55%,
+    #e2c277 80%,
+    #9c6f22 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 html {
@@ -19,12 +37,29 @@ html {
 }
 
 body {
-  background: var(--color-cream);
+  background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-blush);
+  background: var(--color-gold-light);
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

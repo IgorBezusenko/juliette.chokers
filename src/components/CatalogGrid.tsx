@@ -19,7 +19,7 @@ export function CatalogGrid({ initial = "all" }: { initial?: Filter }) {
 
   return (
     <>
-      <div className="-mx-4 mb-10 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0" role="tablist">
+      <div className="-mx-4 mb-8 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:justify-center sm:px-0" role="tablist">
         {tabs.map((t) => {
           const active = filter === t.id;
           return (
@@ -29,8 +29,8 @@ export function CatalogGrid({ initial = "all" }: { initial?: Filter }) {
               role="tab"
               aria-selected={active}
               onClick={() => setFilter(t.id)}
-              className={`shrink-0 rounded-full border px-5 py-2 text-sm transition-colors ${
-                active ? "border-ink bg-ink text-pearl" : "border-line bg-pearl text-ink hover:border-rose"
+              className={`min-h-11 shrink-0 border px-5 py-2 text-sm transition-colors ${
+                active ? "border-ink bg-ink text-cream" : "border-line bg-cream text-ink hover:border-gold hover:text-gold"
               }`}
             >
               {t.label}
@@ -39,7 +39,7 @@ export function CatalogGrid({ initial = "all" }: { initial?: Filter }) {
         })}
       </div>
 
-      <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-3">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {items.map((p, i) => (
           <ProductCard key={p.slug} product={p} priority={i < 3} />
         ))}

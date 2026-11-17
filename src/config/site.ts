@@ -32,3 +32,8 @@ export const links = {
 export function formatPrice(value: number) {
   return `${value.toLocaleString("ru-RU")} ${site.currency}`;
 }
+
+/** Цена по частям — для оформления «цифры + валюта» как на сертификате. */
+export function priceParts(value: number) {
+  return { value: value.toLocaleString("ru-RU"), currency: site.currency };
+}

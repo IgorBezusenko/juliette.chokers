@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { OrderButtons } from "@/components/OrderButtons";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductImage } from "@/components/ProductImage";
-import { formatPrice } from "@/config/site";
+import { Card, Pearls, Price, SectionTitle } from "@/components/Brand";
+import { priceParts } from "@/config/site";
 import { categories, getProduct, products } from "@/data/products";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -34,49 +35,54 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound();
 
   const category = categories.find((c) => c.id === product.category);
-  const related = products.filter((p) => p.category === product.category && p.slug !== product.slug).slice(0, 3);
+  const price = priceParts(product.price);
+  const related = products.filter((p) => p.category === product.category && p.slug !== product.slug).slice(0, 4);
 
   return (
     <>
-      <section className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">
-        <nav className="mb-8 text-xs text-muted" aria-label="Навигация">
-          <Link href="/catalog" className="hover:text-rose-dark">Каталог</Link>
+      <section className="mx-auto max-w-6xl px-4 pt-4 sm:px-6 sm:pt-8">
+        <nav className="mb-4 text-xs text-muted" aria-label="Навигация">
+          <Link href="/catalog" className="hover:text-gold">Каталог</Link>
           <span className="mx-2">/</span>
-          <Link href={`/catalog?c=${product.category}`} className="hover:text-rose-dark">{category?.plural}</Link>
+          <Link href={`/catalog?c=${product.category}`} className="hover:text-gold">{category?.plural}</Link>
         </nav>
 
-        <div className="grid gap-10 md:grid-cols-2 md:gap-16">
-          <ProductImage product={product} priority className="rounded-[2rem]" sizes="(min-width: 768px) 50vw, 100vw" />
+        <Card className="grid gap-6 p-3 sm:p-4 md:grid-cols-2 md:gap-10">
+          <div className="relative">
+            <ProductImage product={product} priority sizes="(min-width: 768px) 50vw, 100vw" />
+            {product.bestseller && (
+              <span className="absolute left-3 top-2 font-script text-2xl text-gold">хит продаж</span>
+            )}
+          </div>
 
-          <div className="md:py-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-rose">{category?.label}</p>
-            <h1 className="mt-3 font-serif text-5xl leading-tight">{product.name}</h1>
-            <p className="mt-4 text-2xl">{formatPrice(product.price)}</p>
+          <div className="flex flex-col items-center px-3 pb-6 text-center md:justify-center md:px-6 md:py-8">
+            <SectionTitle as="h1" script={category?.label.toLowerCase()}>
+              {product.name}
+            </SectionTitle>
+            <Pearls count={5} size={12} className="mt-4" />
+            <div className="mt-2">
+              <Price value={price.value} currency={price.currency} size="xl" />
+            </div>
 
-            <p className="mt-8 leading-relaxed text-ink/85">{product.description}</p>
+            <p className="mt-5 max-w-sm text-[13px] leading-relaxed">{product.description}</p>
+            <div className="mt-5 h-px w-9 bg-line" aria-hidden="true" />
+            <p className="mt-4 text-xs leading-relaxed text-muted">
+              {product.materials.join(", ")}
+              <br />
+              ручная работа
+            </p>
 
-            <dl className="mt-8 space-y-3 border-y border-line py-6 text-sm">
-              <div className="flex gap-4">
-                <dt className="w-28 shrink-0 text-muted">Материалы</dt>
-                <dd>{product.materials.join(", ")}</dd>
-              </div>
-              <div className="flex gap-4">
-                <dt className="w-28 shrink-0 text-muted">Изготовление</dt>
-                <dd>ручная работа</dd>
-              </div>
-            </dl>
-
-            <div className="mt-8">
+            <div className="mt-7 w-full max-w-sm text-left">
               <OrderButtons product={product} />
             </div>
           </div>
-        </div>
+        </Card>
       </section>
 
       {related.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 pt-24 sm:px-6">
-          <h2 className="mb-8 font-serif text-3xl sm:text-4xl">Может понравиться</h2>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-3">
+        <section className="mx-auto max-w-6xl px-4 pt-14 sm:px-6">
+          <SectionTitle script="ещё">Может понравиться</SectionTitle>
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.slug} product={p} />
             ))}

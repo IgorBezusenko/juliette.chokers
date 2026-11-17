@@ -11,7 +11,7 @@ type Props = {
 
 export function ProductImage({ product, priority, sizes, className = "" }: Props) {
   return (
-    <div className={`relative aspect-[4/5] overflow-hidden bg-blush ${className}`}>
+    <div className={`relative aspect-[4/5] overflow-hidden bg-photo ${className}`}>
       {product.image ? (
         <Image
           src={product.image}
@@ -32,18 +32,21 @@ export function ProductImage({ product, priority, sizes, className = "" }: Props
 
 type Pt = { x: number; y: number };
 
+/** округление, чтобы сервер и браузер получали одинаковые числа (иначе ошибка гидратации) */
+const r2 = (n: number) => Math.round(n * 100) / 100;
+
 /** точки по дуге эллипса: от чуть выше левого края, через низ, до чуть выше правого */
 function arc(cx: number, cy: number, rx: number, ry: number, count: number, from = -0.1, to = 1.1): Pt[] {
   return Array.from({ length: count }, (_, i) => {
     const a = Math.PI * (from + ((to - from) * i) / (count - 1));
-    return { x: cx + rx * Math.cos(a), y: cy + ry * Math.sin(a) };
+    return { x: r2(cx + rx * Math.cos(a)), y: r2(cy + ry * Math.sin(a)) };
   });
 }
 
 function ring(cx: number, cy: number, rx: number, ry: number, count: number): Pt[] {
   return Array.from({ length: count }, (_, i) => {
     const a = (i / count) * Math.PI * 2;
-    return { x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry };
+    return { x: r2(cx + Math.cos(a) * rx), y: r2(cy + Math.sin(a) * ry) };
   });
 }
 
@@ -51,7 +54,7 @@ function Bead({ x, y, r, color }: { x: number; y: number; r: number; color: stri
   return (
     <g>
       <circle cx={x} cy={y} r={r} fill={color} stroke="rgba(58,46,44,0.12)" strokeWidth={0.8} />
-      <circle cx={x - r * 0.35} cy={y - r * 0.35} r={r * 0.32} fill="#fff" opacity={0.75} />
+      <circle cx={r2(x - r * 0.35)} cy={r2(y - r * 0.35)} r={r2(r * 0.32)} fill="#fff" opacity={0.75} />
     </g>
   );
 }
@@ -77,7 +80,7 @@ function PendantShape({ type, x, y, color }: { type: Pendant; x: number; y: numb
         <g transform={`translate(${x} ${y + 16})`} stroke={color} strokeWidth={2.5} strokeLinecap="round">
           {Array.from({ length: 8 }, (_, i) => {
             const a = (i * Math.PI) / 4;
-            return <line key={i} x1={Math.cos(a) * 11} y1={Math.sin(a) * 11} x2={Math.cos(a) * 17} y2={Math.sin(a) * 17} />;
+            return <line key={i} x1={r2(Math.cos(a) * 11)} y1={r2(Math.sin(a) * 11)} x2={r2(Math.cos(a) * 17)} y2={r2(Math.sin(a) * 17)} />;
           })}
           <circle r={8} fill={color} stroke={stroke} strokeWidth={1} />
         </g>
@@ -184,8 +187,8 @@ function Illustration({ product }: { product: Product }) {
     <svg viewBox="0 0 400 500" className="absolute inset-0 h-full w-full" role="img" aria-label={product.name}>
       <defs>
         <radialGradient id={gid} cx="50%" cy="40%" r="75%">
-          <stop offset="0%" stopColor="#fffaf6" />
-          <stop offset="100%" stopColor="#f1dfd7" />
+          <stop offset="0%" stopColor="#fdfbf8" />
+          <stop offset="100%" stopColor="#ebe4dc" />
         </radialGradient>
       </defs>
       <rect width="400" height="500" fill={`url(#${gid})`} />

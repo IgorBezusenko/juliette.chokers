@@ -51,7 +51,7 @@ export function OrderButtons({ product }: { product: Product }) {
   }
 
   const btn =
-    "flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm transition-colors";
+    "flex w-full items-center justify-center gap-2 min-h-11 px-6 py-3.5 text-sm transition-colors";
 
   return (
     <div className="space-y-3">
@@ -60,7 +60,7 @@ export function OrderButtons({ product }: { product: Product }) {
         target="_blank"
         rel="noopener noreferrer"
         onClick={copy}
-        className={`${btn} bg-ink text-pearl hover:bg-rose-dark`}
+        className={`${btn} bg-ink text-cream hover:bg-gold`}
       >
         <InstagramIcon className="h-4 w-4" />
         Заказать в Instagram
@@ -72,7 +72,7 @@ export function OrderButtons({ product }: { product: Product }) {
           target="_blank"
           rel="noopener noreferrer"
           onClick={copy}
-          className={`${btn} border border-ink/20 text-ink hover:border-rose hover:text-rose-dark`}
+          className={`${btn} border border-ink/20 text-ink hover:border-gold hover:text-gold`}
         >
           <TelegramIcon className="h-4 w-4" />
           Написать в Telegram
@@ -80,7 +80,7 @@ export function OrderButtons({ product }: { product: Product }) {
       )}
 
       {viber && (
-        <a href={viber} className={`${btn} border border-ink/20 text-ink hover:border-rose hover:text-rose-dark`}>
+        <a href={viber} className={`${btn} border border-ink/20 text-ink hover:border-gold hover:text-gold`}>
           <ViberIcon className="h-4 w-4" />
           Написать в Viber
         </a>
@@ -89,7 +89,7 @@ export function OrderButtons({ product }: { product: Product }) {
       <button
         type="button"
         onClick={copy}
-        className="flex w-full items-center justify-center gap-2 py-2 text-xs text-muted hover:text-rose-dark"
+        className="flex w-full items-center justify-center gap-2 py-2 text-xs text-muted hover:text-gold"
       >
         <CopyIcon className="h-3.5 w-3.5" />
         {copied ? "Текст скопирован — вставьте его в сообщение" : "Скопировать текст заказа"}
